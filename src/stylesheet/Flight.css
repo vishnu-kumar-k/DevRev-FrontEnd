@@ -31,3 +31,9 @@ span {
 
   background-color: rgb(180, 233, 228);
 }
+
+.passenger-form
+{
+  background-color:#e2e2e2;
+  padding: 2em;
+}

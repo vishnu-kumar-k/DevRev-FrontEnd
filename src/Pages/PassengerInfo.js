@@ -12,9 +12,9 @@ const PassengerInfo = () => {
   const [passengers, setPassengers] = useState([]);
   const [index, setIndex] = useState(1);
   const [pcount, setPCount] = useState(true);
-  const jwt=useRecoilValue(Jwt)
+  const jwt = useRecoilValue(Jwt);
   const fl = useRecoilValue(FlightId);
-  const navigate=useNavigate()
+  const navigate = useNavigate();
   const handlePassengerCountChange = (e) => {
     const c = parseInt(e.target.value);
     setIndex(1);
@@ -65,11 +65,17 @@ const PassengerInfo = () => {
     };
     setPassengers(newPassengers);
   };
-  console.log(passengers);
-  function subtractTimes(time1, time2) {
-    const date1 = new Date(`1970-01-01T${time1}Z`);
-    const date2 = new Date(`1970-01-01T${time2}Z`);
-    const diff = Math.abs(date1 - date2);
+  function subtractTimes(
+    departureDate,
+    departureTime,
+    arrivalDate,
+    arrivalTime
+  ) {
+    departureDate = departureDate.split("T");
+    arrivalDate = arrivalDate.split("T");
+    const departureDateTime = new Date(`${departureDate[0]}T${departureTime}`);
+    const arrivalDateTime = new Date(`${arrivalDate[0]}T${arrivalTime}`);
+    const diff = Math.abs(departureDateTime - arrivalDateTime);
 
     const hours = Math.floor(diff / (1000 * 60 * 60))
       .toString()
@@ -110,24 +116,24 @@ const PassengerInfo = () => {
     return formattedDate;
   }
 
-  const handleBook = async(e) => {
+  const handleBook = async (e) => {
     e.preventDefault();
-    var n=new Date()
+    var n = new Date();
     axios
       .post("/booking", {
         passenger: passengers,
         flightId: fl.flightId,
         currentDate: n.toISOString(),
-        token:jwt,
+        token: jwt,
       })
-      .then((result) => {if(result.data.status)
-      {
-        toast.success("Booking confirmed");
-        setTimeout(()=>
-        {
-          navigate("/mybooking")
-        },5000)
-      }})
+      .then((result) => {
+        if (result.data.status) {
+          toast.success("Booking confirmed");
+          setTimeout(() => {
+            navigate("/mybooking");
+          }, 5000);
+        }
+      })
       .catch((err) => console.log(err));
   };
 
@@ -159,7 +165,12 @@ const PassengerInfo = () => {
             </div>
 
             <div className="flightdate">
-              {subtractTimes(fl.arrivalTime, fl.departureTime)}
+              {subtractTimes(
+                fl.departureDatetime,
+                fl.departureTime,
+                fl.arrivalDatetime,
+                fl.arrivalTime
+              )}
             </div>
             <div className="flightdate">{fl.destinationLocation}</div>
           </div>
@@ -173,7 +184,7 @@ const PassengerInfo = () => {
               Airline Name : <span>{fl.airlineName}</span>
             </p>
             <p>
-              Price : <span>{fl.flightPrice}</span>
+              Price : ₹<span>{fl.flightPrice.toLocaleString("en-IN")}</span>
             </p>
             <p>
               Seats Available : <span>{fl.seatCount}</span>
@@ -226,11 +237,10 @@ const PassengerInfo = () => {
             <br />
             {!pcount ? (
               <>
-                
                 <form className="passenger-form">
-                Passenger {index}<br />
-                <br />
-                
+                  Passenger {index}
+                  <br />
+                  <br />
                   <Form.Label htmlFor={`name-${index}`}>Name:</Form.Label>
                   <Form.Control
                     type="text"
@@ -240,9 +250,7 @@ const PassengerInfo = () => {
                     value={passengers[index - 1]?.name}
                     onChange={(e) => handleInputChange(e, index)}
                   />
-                  <br />
-                  <br />
-                  <label htmlFor={`gender-${index}`}>Gender:</label>
+                  <Form.Label htmlFor={`gender-${index}`}>Gender:</Form.Label>
                   <Form.Select
                     id={`gender-${index}`}
                     name="gender"
@@ -254,9 +262,9 @@ const PassengerInfo = () => {
                     <option value="female">Female</option>
                     <option value="other">Other</option>
                   </Form.Select>
-                  <br />
-                  <br />
-                  <label htmlFor={`age-group-${index}`}>Age Group:</label>
+                  <Form.Label htmlFor={`age-group-${index}`}>
+                    Age Group:
+                  </Form.Label>
                   <Form.Select
                     id={`age-group-${index}`}
                     name="ageGroup"
@@ -268,9 +276,9 @@ const PassengerInfo = () => {
                     <option value="adult">Adult (18-60)</option>
                     <option value="senior">Senior (above 60)</option>
                   </Form.Select>
-                  <br />
-                  <br />
-                  <label htmlFor={`phone-number-${index}`}>Phone Number:</label>
+                  <Form.Label htmlFor={`phone-number-${index}`}>
+                    Phone Number:
+                  </Form.Label>
                   <Form.Control
                     type="text"
                     id={`phone-number-${index}`}
@@ -326,3 +334,12 @@ const PassengerInfo = () => {
               </>
             ) : (
               <></>
+            )}
+          </>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default PassengerInfo;

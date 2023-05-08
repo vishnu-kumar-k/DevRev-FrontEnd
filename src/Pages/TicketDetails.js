@@ -16,11 +16,15 @@ export const TicketDetails = ({ booking }) => {
       .catch((err) => console.log(err));
   }, []);
   console.log(ticketDetails);
-  function subtractTimes(time1, time2) {
-    const date1 = new Date(`1970-01-01T${time1}Z`);
-    const date2 = new Date(`1970-01-01T${time2}Z`);
-    const diff = Math.abs(date1 - date2);
-
+  function subtractTimes(departureDate, departureTime, arrivalDate, arrivalTime) {
+    try{
+    departureDate=departureDate.split("T")
+    arrivalDate=arrivalDate.split("T")
+    
+    const departureDateTime = new Date(`${departureDate[0]}T${departureTime}`);
+    const arrivalDateTime = new Date(`${arrivalDate[0]}T${arrivalTime}`);
+    const diff = Math.abs(departureDateTime - arrivalDateTime);
+  
     const hours = Math.floor(diff / (1000 * 60 * 60))
       .toString()
       .padStart(2, "0");
@@ -31,7 +35,13 @@ export const TicketDetails = ({ booking }) => {
       return `${hours} h`;
     } else {
       return `${hours} h ${minutes} m`;
+
     }
+  }
+  catch(err)
+  {
+   return" " 
+  }
   }
   function convertTo12HourFormat(time) {
     let hour = parseInt(time.substring(0, 2));
@@ -86,7 +96,7 @@ export const TicketDetails = ({ booking }) => {
               </div>
 
               <div className="flightdate">
-                {subtractTimes(booking.arrivalTime, booking.departureTime)}
+                {subtractTimes(booking.departureDatetime,booking.departureTime, booking.arrivalDatetime,booking.arrivalTime)}
               </div>
               <div className="flightdate">{booking.destinationLocation}</div>
             </div>

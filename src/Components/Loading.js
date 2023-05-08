@@ -1,5 +1,5 @@
 import React from "react";
-import BarLoader from "react-spinners/SyncLoader";
+import BarLoader from "react-spinners/ScaleLoader";
 import "../stylesheet/Loading.css"
 const Loading = () => {
   return (

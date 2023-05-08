@@ -107,4 +107,12 @@ export const Flights = ({ fl }) => {
           <p>Seats Available : <span>{fl.seatCount}</span></p>
           </div>
         </Card.Body>
-    
+        <Card.Footer>
+          <div className="d-flex justify-content-center">
+            <button className="btn btn-info" onClick={handleBook} >Book</button>
+          </div>
+        </Card.Footer>
+      </Card>
+    </div>
+  );
+};

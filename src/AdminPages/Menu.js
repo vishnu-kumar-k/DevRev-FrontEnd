@@ -2,7 +2,7 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { useRecoilState } from "recoil";
-import { Admin, AdminJwt } from "../Atom/Atom";
+import { Admin, AdminJwt, Load } from "../Atom/Atom";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import axios from "../Axios/Axios";
@@ -11,12 +11,15 @@ function Menu() {
   const [admin, setAdmin] = useRecoilState(Admin);
   const[adminjwt,setAdminjwt]=useRecoilState(AdminJwt)
   const navigate=useNavigate();
+  const [loading,setLoading]=useRecoilState(Load)
   useEffect(()=>
   {
+    setLoading(true)
     axios.post("/verifyadmin",{},{headers:{
       token:adminjwt
     }}).then((result)=>
     {
+      setLoading(false)
       if(result.data.status)
       {
         setAdmin({name:result.data.name,status:true})
@@ -36,6 +39,7 @@ function Menu() {
     navigate("/admin/login")
   }
   return (
+    <>{loading?(<></>):(
     <Navbar bg="light" expand="lg">
       <Container>
         <Navbar.Brand >AirBook</Navbar.Brand>
@@ -63,7 +67,7 @@ function Menu() {
           </Nav>
         </Navbar.Collapse>
       </Container>
-    </Navbar>
+    </Navbar>)}</>
   );
 }
 

@@ -39,5 +39,5 @@ export const FlightId=atom({
 
 export const AdminFlightId=atom({
     key:"AdminFlightId",
-    default:1
+    default:false
 })

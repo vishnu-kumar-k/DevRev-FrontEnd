@@ -13,10 +13,13 @@ export const ViewFlight = ({ fl }) => {
   const navigate = useNavigate();
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  function subtractTimes(time1, time2) {
-    const date1 = new Date(`1970-01-01T${time1}Z`);
-    const date2 = new Date(`1970-01-01T${time2}Z`);
-    const diff = Math.abs(date1 - date2);
+  function subtractTimes(departureDate, departureTime, arrivalDate, arrivalTime) {
+    departureDate=departureDate.split("T")
+    arrivalDate=arrivalDate.split("T")
+    const departureDateTime = new Date(`${departureDate[0]}T${departureTime}`);
+    const arrivalDateTime = new Date(`${arrivalDate[0]}T${arrivalTime}`);
+    const diff = Math.abs(departureDateTime - arrivalDateTime);
+  
     const hours = Math.floor(diff / (1000 * 60 * 60))
       .toString()
       .padStart(2, "0");
@@ -98,14 +101,14 @@ export const ViewFlight = ({ fl }) => {
             </div>
 
             <div className="flightdate">
-              {subtractTimes(fl.arrivalTime, fl.departureTime)}
+              {subtractTimes(fl.departureDatetime,fl.departureTime,fl.arrivalDatetime,fl.arrivalTime)}
             </div>
             <div className="flightdate">{fl.destinationLocation}</div>
           </div>
         </Card.Header>
         <Card.Body>
           <p>
-            Name : <span>{fl.flightName}</span>
+          Flight  Name : <span>{fl.flightName}</span>
           </p>
           <p>
             Airline Name : <span>{fl.airlineName}</span>
@@ -154,4 +157,4 @@ export const ViewFlight = ({ fl }) => {
       </Modal>
     </div>
   );
-}
+};

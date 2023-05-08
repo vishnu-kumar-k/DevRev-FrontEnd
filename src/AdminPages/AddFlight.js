@@ -55,7 +55,7 @@ const Navigate=useNavigate()
             <Form onSubmit={handleSubmit}>
               <Row>
                 <Col xs={4}>
-                  <Form.Label className="label">Name</Form.Label>
+                  <Form.Label className="label">Flight Name</Form.Label>
                   <br />
                   <br />
                   <Form.Label className="label">Depart Location</Form.Label>

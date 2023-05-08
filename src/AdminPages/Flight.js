@@ -4,7 +4,7 @@ import { Container } from 'react-bootstrap';
 import { useRecoilState } from 'recoil';
 import { Load } from '../Atom/Atom';
 import { ViewFlight } from './ViewFlight';
-
+import Loading from "../Components/Loading"
 export const Flight = () => {
     const[flight,setFlight]=useState();
     const[loading,setLoading]=useRecoilState(Load)
@@ -19,8 +19,7 @@ export const Flight = () => {
     },[])
   return (
     <Container >
-        {!loading&&flight?(<>{flight.map((f,k)=>(<ViewFlight fl={f}/>))}</>):(<>
-        </>)}
+        {!loading&&flight?(<>{flight.map((f,k)=>(<ViewFlight fl={f}/>))}</>):(<Loading />)}
         
     </Container>
   )

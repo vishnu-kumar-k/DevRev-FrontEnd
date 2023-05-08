@@ -6,7 +6,7 @@ import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import { Link, useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import { Jwt, User } from "../Atom/Atom";
+import { Jwt, Load, User } from "../Atom/Atom";
 import { useEffect } from "react";
 import axios from "../Axios/Axios";
 import { toast } from "react-toastify";
@@ -14,8 +14,10 @@ import { toast } from "react-toastify";
 function NavBar() {
   const [user, setUser] = useRecoilState(User);
   const [jwt, setjwt] = useRecoilState(Jwt);
+  const[loading,setLoading]=useRecoilState(Load)
   const navigate=useNavigate()
   useEffect(() => {
+    setLoading(true)
     axios
       .post(
         "/verifyuser",
@@ -27,6 +29,7 @@ function NavBar() {
         }
       )
       .then((result) => {
+        setLoading(false)
         if (result.data.status) {
           setUser({ status: true, name: result.data.name });
         } else {
@@ -55,7 +58,7 @@ function NavBar() {
       setTimeout(()=>navigate("/login"),5000)
     }
   }
-  return (
+  return (<>{loading?(<></>):(
     <Navbar bg="light" expand="lg">
       <Container>
         <Navbar.Brand >AirBook</Navbar.Brand>
@@ -89,7 +92,7 @@ function NavBar() {
           </Nav>
         </Navbar.Collapse>
       </Container>
-    </Navbar>
+    </Navbar>)}</>
   );
 }
 
