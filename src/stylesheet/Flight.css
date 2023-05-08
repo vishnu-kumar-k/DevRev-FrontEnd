@@ -1,0 +1,33 @@
+.flighttime {
+  font-size: 1.3em;
+  color: rgb(255, 0, 0);
+  font-weight: 500;
+}
+.flightdate {
+  font-size: 1.1em;
+  color: black;
+  font-weight: 500;
+}
+p {
+  font-weight: 500;
+}
+span {
+  color: rgb(55, 0, 255);
+  font-weight: 500;
+}
+.filter-form {
+  padding: 1em;
+  padding-bottom: 3em;
+  border-radius: 1em;
+  background-color: rgba(127, 255, 212, 0.723);
+}
+.Link {
+  text-decoration: none;
+  color: black;
+}
+.form-outline {
+  padding: 1.4em;
+  border-radius: 1em;
+
+  background-color: rgb(180, 233, 228);
+}
