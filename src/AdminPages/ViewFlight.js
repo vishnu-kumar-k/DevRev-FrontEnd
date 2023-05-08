@@ -56,6 +56,7 @@ export const ViewFlight = ({ fl }) => {
   }
   const handleConfirmRemove = (e) => {
     e.preventDefault();
+    setShow(false)
     axios
       .post("/admin/removeflight", { id: fl.flightId })
       .then((result) => {

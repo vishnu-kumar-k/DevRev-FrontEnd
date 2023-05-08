@@ -4,6 +4,9 @@ import flight from "../Images/flight.png";
 import axios from "../Axios/Axios";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { useRecoilState } from "recoil";
+import { Load } from "../Atom/Atom";
+import Loading from "../Components/Loading";
 export const AddFlight = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -17,6 +20,7 @@ export const AddFlight = () => {
     departureTime: "",
     arrivalTime: "",
   });
+  const[loading,setLoading]=useRecoilState(Load);
 const Navigate=useNavigate()
   const handleChange = (e) => {
     setFormData({
@@ -32,8 +36,10 @@ const Navigate=useNavigate()
     if (arrivalDate < departureDate) {
       toast.warning("Arrival Date is before Departure Date");
     } else {
+      setLoading(true);
       axios.post("/addflight", formData).then((result) => {
         if (result.data.status) {
+          setLoading(false)
           toast.success("Added Successfully");
           setTimeout(()=>Navigate("/admin"),5000)
           Navigate("/admin")
@@ -45,7 +51,7 @@ const Navigate=useNavigate()
   };
 
   return (
-    <>
+    <>{loading?(<Loading />):(
       <Container>
         <ToastContainer />
         <Row>
@@ -171,7 +177,7 @@ const Navigate=useNavigate()
           </Col>
           <Col md={3} xs={0}></Col>
         </Row>
-      </Container>
+      </Container>)}
     </>
   );
 };
